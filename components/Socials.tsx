@@ -40,7 +40,7 @@ const Socials: React.FC<SocialIconsProps> = ({
           <img
             src={social.src}
             alt={social.alt}
-            className="w-[5rem] h-auto sm:w-[2rem] block"
+            className="w-6 h-6 sm:w-8 sm:h-8 md:w-10 md:h-10 block"
             style={{ objectFit: "contain" }}
           />
         </a>

@@ -138,8 +138,8 @@ export default function Home() {
               1000yearsofwrath
             </h1>
 
-            <div className="text-center color text-gray-400 italic opacity-50">
-              v2.1
+            <div className="hidden sm:block text-center color text-gray-400 italic opacity-50">
+              v2.2
             </div>
           </div>
 
@@ -248,7 +248,7 @@ export default function Home() {
 
           {/* Marquee компонент */}
           <Marquee
-            text="— powered by aviaplanes —    "
+            text="— powered by aviaplanes     "
             speed={500}
             isLoaded={isLoaded}
             className="w-3/4 mx-auto text-gray-500 font-system-ui mb-[3rem]"
@@ -256,19 +256,20 @@ export default function Home() {
         </div>
 
         <div
-          style={{
-            position: "fixed",
-            bottom: "7px",
-            left: "50%",
-            transform: "translateX(-50%)",
-            color: "white",
-            padding: "10px 20px",
-            borderRadius: "8px",
-            zIndex: 9999,
-          }}
-        >
-          <GlassAudioPlayer songs={songs} />
-        </div>
+  className="hidden md:block"
+  style={{
+    position: "fixed",
+    bottom: "7px",
+    left: "50%",
+    transform: "translateX(-50%)",
+    color: "white",
+    padding: "10px 20px",
+    borderRadius: "8px",
+    zIndex: 9999,
+  }}
+>
+  <GlassAudioPlayer songs={songs} />
+</div>
       </div>
     </>
   );
