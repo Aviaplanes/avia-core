@@ -1,26 +1,331 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+    --background: #121212;
+    --foreground: #ededed;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+html {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+html::-webkit-scrollbar {
+    display: none;
 }
 
 @media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+    :root {
+        --background: #0a0a0a;
+        --foreground: #ededed;
+    }
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+    background: var(--background);
+    color: var(--foreground);
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+::selection {
+    background: #004c8ac1; /* цвет фона выделения */
+    color: #ffffff; /* цвет текста при выделении */
+}
+
+* {
+    user-select: none;
+}
+
+@keyframes gradientFlow {
+    0%,
+    100% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+}
+
+@keyframes marquee {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(-50%);
+    }
+}
+
+.animate-gradientFlow {
+    animation: gradientFlow 25s ease infinite;
+}
+
+.animate-marquee {
+    animation: marquee 20s linear infinite;
+    backface-visibility: hidden;
+    transform: translate3d(0, 0, 0);
+}
+
+.liquidGlass-wrapper {
+    position: relative;
+    display: flex;
+    font-weight: 600;
+    overflow: hidden;
+
+    color: black;
+    cursor: pointer;
+    
+ 
+      
+      
+}
+
+
+
+
+.liquidGlass-effect {
+    position: absolute;
+    z-index: 0;
+    inset: 0;
+
+    backdrop-filter: blur(0px);
+    filter: url(#edge-glass-effect);
+    overflow: hidden;
+    isolation: isolate;
+}
+
+.liquidGlass-tint {
+    z-index: 1;
+    position: absolute;
+    inset: 0;
+    background: rgba(255, 255, 255, 0.021);
+}
+
+.circle {
+    position: relative;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    background: #5d00ff;
+    overflow: hidden;
+   
+       
+}
+
+.circle::before {
+    content: "";
+    position: absolute;
+    inset: -50%; /* делаем больше, чтобы filter обрезается */
+    background: radial-gradient(
+        circle at 30% 20%,
+        rgba(237, 223, 223, 0.9),
+        transparent 60%
+    );
+    filter: blur(10px);
+    opacity: 0.7;
+}
+
+.liquidGlass-text {
+    z-index: 3;
+    font-size: 2rem;
+    color: rgb(255, 255, 255);
+}
+
+/* OTHER STYLES */
+
+body {
+    padding: 0;
+    margin: 0;
+    
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background-size: 500px;
+    font-family: sans-serif;
+    font-weight: 300;
+
+    animation: moveBackground 100s linear infinite;
+}
+
+a {
+    text-decoration: none;
+}
+
+.wrapper {
+    display: flex;
+    gap: 25px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-end;
+}
+
+.menu,
+.menu > div {
+    padding: 0.4rem;
+    border-radius: 1.8rem;
+}
+
+.menu:hover {
+    padding: 0.6rem;
+    border-radius: 1.8rem;
+}
+
+.menu > div > div {
+    font-size: 20px;
+    color: rgb(255, 255, 255);
+    padding: 0.4rem 0.6rem;
+    border-radius: 0.8rem;
+    transition: all 0.1s ease-in;
+}
+
+.menu > div > div:hover {
+    background-color: rgb(246, 0, 0);
+    box-shadow: inset -2px -2px 2px rgba(255, 248, 248, 0.1);
+    backdrop-filter: blur(3px);
+}
+
+.dock {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    border-radius: 2rem;
+    padding: 0.6rem;
+}
+
+.dock,
+.dock > div {
+    border-radius: 2rem;
+}
+
+.dock:hover {
+    padding: 0.8rem;
+    border-radius: 2.5rem;
+}
+
+.dock:hover > div {
+    border-radius: 2.5rem;
+}
+
+.dock img {
+    width: 75px;
+    padding: 0;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 2.2);
+}
+
+.dock img:hover {
+    transform: scale(0.95);
+    transform-origin: center center;
+}
+
+.button {
+    padding: 1.5rem 2.5rem;
+    border-radius: 3rem;
+}
+
+.button,
+.button > div {
+    border-radius: 3rem;
+}
+
+.button:hover {
+    padding: 1.8rem 2.8rem;
+}
+
+.button:hover > div {
+    border-radius: 4rem;
+}
+
+.button svg {
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 2.2);
+}
+
+.button:hover svg {
+    transform: scale(0.95);
+}
+
+
+
+/* globals.css */
+:root {
+  --glass-rgb: 255 255 255;
+  --glass-bg-alpha: 0.18;
+}
+
+.dark {
+  --glass-rgb: 0 0 0;
+  --glass-bg-alpha: 0.2;
+}
+
+
+.player-container {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+
+  width: 100%;
+
+  /* Стартовое состояние */
+  opacity: 0;
+  transform: translateY(30px);
+
+  animation: fadeUp 1s ease-out forwards;
+}
+
+@keyframes fadeUp {
+  0% {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+
+.controls-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.anim-btn {
+  transform: translateX(300px);
+  animation: slideIn 0.25s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+/* Появляются по очереди */
+.btn-0 { animation-delay: 0.10s; }
+.btn-1 { animation-delay: 0.20s; }
+.btn-2 { animation-delay: 0.35s; }
+.btn-3 { animation-delay: 0.50s; }
+
+@keyframes slideIn {
+  0% {
+    transform: translateX(50px);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+
+
+.soft-press {
+  transition: transform 0.12s ease;
+}
+
+.soft-press:active {
+  transform: scale(1.03);
+}
+
+.liquidGlass-wrapper {
+  border-radius: inherit;
+}
+
+.liquidGlass-effect,
+.liquidGlass-tint,
+.liquidGlass-shine {
+  border-radius: inherit;
 }

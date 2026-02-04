@@ -1,65 +1,275 @@
+"use client";
+
+import { useEffect, useRef, useState } from "react";
+
+import Background from "@/components/panel/Background";
 import Image from "next/image";
+import useLenis from "@/hooks/useLenis";
+import Socials from "@/components/Socials";
+import GlassAudioPlayer from "@/components/audio-player/GlassAudioPlayer";
+import Marquee from "@/components/Marquee";
+
+const songs = [
+  {
+    id: "1",
+    title: "GRAVELAND (prod. shawtyglock x blayze)",
+    artist: "VELIAL SQUAD",
+    src: "/music/VELIAL SQUAD - GRAVELAND.flac",
+    cover: "/music/images/VELIAL SQUAD - GRAVELAND.webp",
+  },
+  {
+    id: "2",
+    title: "Creepers",
+    artist: "VELIAL SQUAD",
+    src: "/music/VELIAL SQUAD - CREEPERS.mpeg",
+    cover: "/music/images/VELIAL SQUAD - CREEPERS.jpg",
+  },
+  {
+    id: "3",
+    title: "what else can you ask for",
+    artist: "IVOXYGEN",
+    src: "/music/IVOXYGEN - what else can you ask for.flac",
+    cover: "/music/images/IVOXYGEN - what else can you ask for.jpg",
+  },
+  {
+    id: "4",
+    title: "Headlock",
+    artist: "Imogen Heap",
+    src: "/music/Imogen Heap - Headlock.flac",
+    cover: "/music/images/Imogen Heap - Headlock.jpg",
+  },
+];
 
 export default function Home() {
+  useLenis();
+
+  const parallaxRef = useRef<HTMLDivElement>(null);
+  const imageContainerRef = useRef<HTMLDivElement>(null);
+  const titleRef = useRef<HTMLHeadingElement>(null);
+  const greetingRef = useRef<HTMLHeadingElement>(null);
+
+  const [scale, setScale] = useState(1);
+  const [blur, setBlur] = useState(0);
+  const [brightness, setBrightness] = useState(1);
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  useEffect(() => {
+    window.history.scrollRestoration = "manual";
+    window.scrollTo(0, 0);
+    const timer = setTimeout(() => {
+      setIsLoaded(true);
+    }, 100);
+    return () => clearTimeout(timer);
+  }, []);
+
+  useEffect(() => {
+    const isMobile = window.innerWidth < 768;
+    if (isMobile) return;
+
+    const handleScroll = () => {
+      const imageRect = imageContainerRef.current?.getBoundingClientRect();
+      if (!imageRect) return;
+
+      const startDistance = 35;
+      const maxDistance = 1000;
+      const maxBlur = 11;
+      const minScale = 0.7;
+      const minBrightness = 0.01;
+
+      const distanceFromStart =
+        window.scrollY - (imageRect.top + window.scrollY - startDistance);
+      const progress = Math.min(
+        Math.max(distanceFromStart / maxDistance, 0),
+        1,
+      );
+
+      setScale(1 - (1 - minScale) * progress);
+      setBlur(progress * maxBlur);
+      setBrightness(1 - (1 - minBrightness) * progress);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+    <>
+      <Background />
+      <div
+        style={{
+          position: "fixed",
+          top: 0,
+          left: 0,
+          width: "100vw",
+          height: "100vh",
+          background: "rgba(0, 0, 0, 0)",
+          zIndex: -100,
+          pointerEvents: "none",
+        }}
+      />
+
+      <div className="relative">
+        <div
+          ref={parallaxRef}
+          className="transition-transform duration-300 ease-out will-change-transform,filter"
+          style={{
+            transform: `scale(${scale})`,
+            filter: `blur(${blur}px) brightness(${brightness})`,
+            transformOrigin: "center top",
+          }}
+        >
+          <div
+            ref={titleRef}
+            className="mb-[3rem] text-center"
+            style={{
+              opacity: isLoaded ? 1 : 0,
+              transform: isLoaded ? "translateY(0)" : "translateY(20px)",
+              transition: "opacity 0.7s ease-out, transform 0.7s ease-out",
+            }}
           >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
+            <h1
+              className="mt-[4%] text-4xl sm:text-5xl md:text-6xl lg:text-8xl font-bold whitespace-nowrap bg-clip-text text-transparent
+              bg-gradient-to-r from-[#fcfcfc] via-[#fafafa] to-[#181818] bg-[length:300%_auto] drop-shadow-[0_0_30px_rgba(229,229,229,0.6)]
+              animate-gradientFlow"
+              style={{
+                fontFamily: "system-ui",
+              }}
+            >
+              1000yearsofwrath
+            </h1>
+
+            <div className="text-center color text-gray-400 italic opacity-50">
+              v2.1
+            </div>
+          </div>
+
+          <div
+            ref={imageContainerRef}
+            className="w-[230px] h-[230px] sm:w-[280px] sm:h-[280px] md:w-[320px] md:h-[320px] lg:w-[380px] lg:h-[380px] mx-auto relative mb-8"
+            style={{
+              borderRadius: "50%",
+              overflow: "hidden",
+              opacity: isLoaded ? 1 : 0,
+              transform: isLoaded ? "scale(1)" : "scale(0.8)",
+              transition: "opacity 0.7s ease-out, transform 0.7s ease-out",
+              transitionDelay: "0.2s",
+            }}
+          >
+            <div
+              className="absolute inset-0 z-10 rounded-full pointer-events-none"
+              style={{
+                background:
+                  "radial-gradient(circle at center, rgba(10,10,10,0) 80%, var(--bg-primary) 100%)",
+              }}
             />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+
+            <div className="absolute inset-0 rounded-full overflow-hidden">
+              <Image
+                src="/images/i.webp"
+                alt="000"
+                fill
+                className="object-cover rounded-full"
+                style={{
+                  filter: "brightness(1.05)",
+                  backgroundColor: "transparent",
+                }}
+                loading="eager"
+                blurDataURL="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzc3IiBoZWlnaHQ9IjM3NyIgdmlld0JveD0iMCAwIDM3NyAzNzciIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0iI2VlZSIvPjwvc3ZnPg=="
+                onLoad={() => setIsLoaded(true)}
+              />
+            </div>
+
+            <div
+              className="absolute inset-0 z-5 rounded-full"
+              style={{
+                background:
+                  "radial-gradient(circle at center, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0) 70%)",
+                mixBlendMode: "overlay",
+              }}
+            />
+
+            <div
+              className="absolute top-2 left-0 right-0 z-20 text-center opacity-20"
+              style={{
+                color: "rgba(255,255,255,0.7)",
+                fontSize: "10px",
+                letterSpacing: "1px",
+              }}
+            >
+              <div className="mb-1">✧･ﾟ: *✧･ﾟ:* *:･ﾟ✧*:･ﾟ✧</div>
+            </div>
+          </div>
+
+          <h2
+            ref={greetingRef}
+            className="text-base sm:text-lg md:text-xl text-center mt-6 sm:mt-8 md:mt-10 mb-4 font-bold text-black/90 dark:text-white/90 leading-relaxed text-shadow-xs text-shadow-white/30 dark:text-shadow-black/60 px-4 sm:px-6 md:px-8"
+            style={{
+              opacity: isLoaded ? 1 : 0,
+              transform: isLoaded ? "translateY(0)" : "translateY(20px)",
+              transition: "opacity 0.7s ease-out, transform 0.7s ease-out",
+              transitionDelay: "0.4s",
+            }}
           >
-            Documentation
-          </a>
+            Привет, я Авиа. Занимаюсь разработкой сайтов, софтов, low-level
+            софта, блокчейн технологий, ds/tg ботов и просто web3 enjoyer.
+          </h2>
+
+          <div
+            className="flex justify-center mb-8 sm:mb-10 mt-[2rem]"
+            style={{
+              opacity: isLoaded ? 1 : 0,
+              transform: isLoaded ? "translateY(0)" : "translateY(20px)",
+              transitionDelay: "0.6s",
+              transition: "opacity 0.7s ease-out, transform 0.7s ease-out",
+            }}
+          >
+            <Socials
+              isLoaded={isLoaded}
+              socials={[
+                {
+                  href: "https://discordapp.com/users/1014171982696296468/",
+                  src: "/logo/Discord.png",
+                  alt: "Discord",
+                },
+                {
+                  href: "https://github.com/Aviaplanes",
+                  src: "/logo/GitHub.png",
+                  alt: "GitHub",
+                },
+                {
+                  href: "https://twitter.com/1000letgneva",
+                  src: "/logo/X.png",
+                  alt: "Twitter",
+                },
+              ]}
+              className="mb-8 sm:mb-12 mt-[-10px]"
+            />
+          </div>
+
+          {/* Marquee компонент */}
+          <Marquee
+            text="— powered by aviaplanes —    "
+            speed={500}
+            isLoaded={isLoaded}
+            className="w-3/4 mx-auto text-gray-500 font-system-ui mb-[3rem]"
+          />
         </div>
-      </main>
-    </div>
+
+        <div
+          style={{
+            position: "fixed",
+            bottom: "7px",
+            left: "50%",
+            transform: "translateX(-50%)",
+            color: "white",
+            padding: "10px 20px",
+            borderRadius: "8px",
+            zIndex: 9999,
+          }}
+        >
+          <GlassAudioPlayer songs={songs} />
+        </div>
+      </div>
+    </>
   );
 }
