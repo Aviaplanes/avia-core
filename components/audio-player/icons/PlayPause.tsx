@@ -1,6 +1,7 @@
 export const PlayPause = {
   Play: () => (
     <svg 
+      className="text-white"
       stroke="currentColor" 
       fill="currentColor" 
       strokeWidth="0" 
@@ -15,6 +16,7 @@ export const PlayPause = {
 
   Pause: () => (
     <svg 
+      className="text-white"
       stroke="currentColor" 
       fill="currentColor" 
       strokeWidth="0" 

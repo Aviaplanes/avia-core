@@ -8,7 +8,7 @@ export const Repeat = ({ isActive }: RepeatIconProps) => (
     fill="currentColor" 
     strokeWidth="0" 
     viewBox="0 0 512 512" 
-    className={isActive ? "" : "opacity-70"} 
+    className={isActive ? "" : "opacity-70 text-white" } 
     height="18" 
     width="18" 
     xmlns="http://www.w3.org/2000/svg"

@@ -160,7 +160,7 @@ export default function Home() {
             </h1>
 
             <div className="hidden sm:block text-center color text-gray-400 italic opacity-50">
-              v2.2
+              v2.3
             </div>
           </div>
 
@@ -223,7 +223,7 @@ export default function Home() {
 
           <h2
             ref={greetingRef}
-            className="text-base sm:text-lg md:text-xl text-center mt-6 sm:mt-8 md:mt-10 mb-4 font-bold text-black/90 dark:text-white/90 leading-relaxed text-shadow-xs text-shadow-white/30 dark:text-shadow-black/60 px-4 sm:px-6 md:px-8"
+            className="text-base sm:text-lg md:text-xl text-center mt-6 sm:mt-8 md:mt-10 mb-4 font-bold text-white/90 leading-relaxed text-shadow-xs text-shadow-black/60 px-4 sm:px-6 md:px-8"
             style={{
               opacity: isLoaded ? 1 : 0,
               transform: isLoaded ? "translateY(0)" : "translateY(20px)",
@@ -277,20 +277,20 @@ export default function Home() {
         </div>
 
         <div
-  className="hidden md:block"
-  style={{
-    position: "fixed",
-    bottom: "7px",
-    left: "50%",
-    transform: "translateX(-50%)",
-    color: "white",
-    padding: "10px 20px",
-    borderRadius: "8px",
-    zIndex: 9999,
-  }}
->
-  <GlassAudioPlayer songs={songs} />
-</div>
+          className="hidden md:block"
+          style={{
+            position: "fixed",
+            bottom: "7px",
+            left: "50%",
+            transform: "translateX(-50%)",
+            color: "white",
+            padding: "10px 20px",
+            borderRadius: "8px",
+            zIndex: 9999,
+          }}
+        >
+          <GlassAudioPlayer songs={songs} />
+        </div>
       </div>
     </>
   );

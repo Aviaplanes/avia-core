@@ -43,13 +43,17 @@ export const ProgressBar = ({
           </div>
         )}
       </div>
+
       <div className="min-w-0 flex-1">
-        <div className="font-semibold text-[14px] text-black/90 dark:text-white/90 truncate [line-height:1.3] text-shadow-xs text-shadow-white/30 dark:text-shadow-black/60">
+
+        <div className="font-semibold text-[14px] text-white/90 truncate [line-height:1.3] text-shadow-xs text-shadow-black/60">
           {song.title}
         </div>
-        <div className="text-[11px] text-black/60 dark:text-white/60 truncate text-shadow-xs [line-height:1.3] text-shadow-white/30 dark:text-shadow-black/60">
+
+        <div className="text-[11px] text-white/60 truncate text-shadow-xs [line-height:1.3] text-shadow-black/60">
           {song.artist || "Неизвестный исполнитель"}
         </div>
+
         <div
           ref={progressRef}
           className="mt-1 h-[3px] w-full max-w-full bg-black/10 dark:bg-white/10 rounded cursor-pointer"
@@ -63,7 +67,9 @@ export const ProgressBar = ({
             }}
           />
         </div>
+
       </div>
+
     </div>
   );
 };
