@@ -166,7 +166,7 @@ export default function Home() {
 
           <div
             ref={imageContainerRef}
-            className="w-[230px] h-[230px] sm:w-[280px] sm:h-[280px] md:w-[320px] md:h-[320px] lg:w-[380px] lg:h-[380px] mx-auto relative mb-8"
+            className="w-[160px] h-[160px] sm:w-[280px] sm:h-[280px] md:w-[320px] md:h-[320px] lg:w-[380px] lg:h-[380px] mx-auto relative mb-8"
             style={{
               borderRadius: "50%",
               overflow: "hidden",
