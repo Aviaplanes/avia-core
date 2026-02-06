@@ -151,16 +151,16 @@ export default function Home() {
             <h1
               className="mt-[4%] text-4xl sm:text-5xl md:text-6xl lg:text-8xl font-bold whitespace-nowrap bg-clip-text text-transparent
               bg-gradient-to-r from-[#fcfcfc] via-[#fafafa] to-[#181818] bg-[length:300%_auto] drop-shadow-[0_0_30px_rgba(229,229,229,0.6)]
-              animate-gradientFlow"
+              animate-gradientFlow pb-2"
               style={{
-                fontFamily: "system-ui",
+                fontFamily: 'ui-title-bold, sans-serif'
               }}
             >
               1000yearsofwrath
             </h1>
 
             <div className="hidden sm:block text-center color text-gray-400 italic opacity-50">
-              v2.3
+              v2.4
             </div>
           </div>
 
@@ -229,6 +229,7 @@ export default function Home() {
               transform: isLoaded ? "translateY(0)" : "translateY(20px)",
               transition: "opacity 0.7s ease-out, transform 0.7s ease-out",
               transitionDelay: "0.4s",
+              fontFamily: 'ui-regular, sans-serif', fontSize: '20px' 
             }}
           >
             Привет, я Авиа. Занимаюсь разработкой сайтов, софтов, low-level
@@ -268,12 +269,18 @@ export default function Home() {
           </div>
 
           {/* Marquee компонент */}
-          <Marquee
-            text="— powered by av\aplanes     "
-            speed={500}
-            isLoaded={isLoaded}
-            className="w-3/4 mx-auto text-gray-500 font-system-ui mb-[3rem]"
-          />
+          <div style={{
+                fontFamily: 'ui-regular, sans-serif'
+              }}>
+            <Marquee
+
+              text="— powered by av\aplanes     "
+              speed={500}
+              isLoaded={isLoaded}
+              className="w-3/4 mx-auto text-gray-500 mb-[3rem]"
+              
+            />
+          </div>
         </div>
 
         <div

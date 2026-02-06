@@ -329,3 +329,19 @@ a {
 .liquidGlass-shine {
   border-radius: inherit;
 }
+
+
+@font-face {
+  font-family: 'ui-regular';
+  src: url('/fonts/ui_regular.otf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'ui-title-bold';
+  src: url('/fonts/ui_title_bold.otf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+}
+

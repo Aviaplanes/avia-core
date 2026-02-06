@@ -12,7 +12,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "1000 years of wrath",
+  title: "av\\aplanes",
   description: "123",
 };
 
