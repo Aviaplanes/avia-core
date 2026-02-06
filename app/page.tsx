@@ -38,6 +38,27 @@ const songs = [
     src: "/music/Imogen Heap - Headlock.flac",
     cover: "/music/images/Imogen Heap - Headlock.jpg",
   },
+  {
+    id: "5",
+    title: "Вампирский щит",
+    artist: "VELIAL SQUAD",
+    src: "/music/VELIAL SQUAD - Вампирский щит.mp3",
+    cover: "/music/images/vampire.jpg",
+  },
+  {
+    id: "6",
+    title: "Черная река",
+    artist: "VELIAL SQUAD",
+    src: "/music/Черная_Река_ft_Trantor_p_shawtyglock.mp3",
+    cover: "/music/images/reka.png",
+  },
+  {
+    id: "7",
+    title: "ATRA PLAGUE",
+    artist: "VELIAL SQUAD",
+    src: "/music/ATRA PLAGUE [p. shawtyglock x Yung Meep]   VELIAL SQUAD.mp3",
+    cover: "/music/images/d3ff548ecce04776e30c95a93cc342a9.webp",
+  },
 ];
 
 export default function Home() {
@@ -248,7 +269,7 @@ export default function Home() {
 
           {/* Marquee компонент */}
           <Marquee
-            text="— powered by aviaplanes     "
+            text="— powered by av\aplanes     "
             speed={500}
             isLoaded={isLoaded}
             className="w-3/4 mx-auto text-gray-500 font-system-ui mb-[3rem]"
