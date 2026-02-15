@@ -148,8 +148,9 @@ export default function Home() {
               transition: "opacity 0.7s ease-out, transform 0.7s ease-out",
             }}
           >
+
             <h1
-              className="mt-[4%] text-4xl sm:text-5xl md:text-6xl lg:text-8xl font-bold whitespace-nowrap bg-clip-text text-transparent
+              className="mt-10 sm:mt-16 lg:mt-[4%] text-4xl sm:text-5xl md:text-6xl lg:text-8xl font-bold whitespace-nowrap bg-clip-text text-transparent
               bg-gradient-to-r from-[#fcfcfc] via-[#fafafa] to-[#181818] bg-[length:300%_auto] drop-shadow-[0_0_30px_rgba(229,229,229,0.6)]
               animate-gradientFlow pb-2"
               style={{
@@ -229,7 +230,7 @@ export default function Home() {
               transform: isLoaded ? "translateY(0)" : "translateY(20px)",
               transition: "opacity 0.7s ease-out, transform 0.7s ease-out",
               transitionDelay: "0.4s",
-              fontFamily: 'ui-regular, sans-serif', fontSize: '20px' 
+              fontFamily: 'ui-regular, sans-serif' 
             }}
           >
             Привет, я Авиа. Занимаюсь разработкой сайтов, софтов, low-level
