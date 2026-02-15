@@ -11,6 +11,13 @@ import Marquee from "@/components/Marquee";
 
 const songs = [
   {
+    id: "0",
+    title: "гиблое эго",
+    artist: "VELIAL SQUAD",
+    src: "/music/гиблое эго.flac",
+    cover: "/music/images/гиблое эго.png",
+  },
+  {
     id: "1",
     title: "GRAVELAND (prod. shawtyglock x blayze)",
     artist: "VELIAL SQUAD",
@@ -150,7 +157,7 @@ export default function Home() {
           >
 
             <h1
-              className="mt-10 sm:mt-16 lg:mt-[4%] text-4xl sm:text-5xl md:text-6xl lg:text-8xl font-bold whitespace-nowrap bg-clip-text text-transparent
+              className="mt-10 sm:mt-16 lg:mt-[2%] text-4xl sm:text-5xl md:text-6xl lg:text-8xl font-bold whitespace-nowrap bg-clip-text text-transparent
               bg-gradient-to-r from-[#fcfcfc] via-[#fafafa] to-[#181818] bg-[length:300%_auto] drop-shadow-[0_0_30px_rgba(229,229,229,0.6)]
               animate-gradientFlow pb-2"
               style={{
@@ -161,7 +168,7 @@ export default function Home() {
             </h1>
 
             <div className="hidden sm:block text-center color text-gray-400 italic opacity-50">
-              v2.4
+              v3
             </div>
           </div>
 
