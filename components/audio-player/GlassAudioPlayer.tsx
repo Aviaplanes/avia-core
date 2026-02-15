@@ -192,10 +192,11 @@ export const GlassAudioPlayer = ({
       {/* SVG фильтры */}
       <svg colorInterpolationFilters="sRGB" style={{ display: "none" }}>
         <defs>
+          
           <filter id="mixed-ui-player-filter">
             <feGaussianBlur
               in="SourceGraphic"
-              stdDeviation="0.9"
+              stdDeviation="1.5"
               result="blurred_source"
             />
             <feImage
@@ -209,7 +210,7 @@ export const GlassAudioPlayer = ({
             <feDisplacementMap
               in="blurred_source"
               in2="displacement_map"
-              scale="100.65216865752852"
+              scale="120"
               xChannelSelector="R"
               yChannelSelector="G"
               result="displaced"
@@ -218,7 +219,7 @@ export const GlassAudioPlayer = ({
               in="displaced"
               type="saturate"
               result="displaced_saturated"
-              values="3"
+              values="9"
             />
             <feImage
               href="/images/specular-map-yr2eh1.png"
@@ -235,7 +236,7 @@ export const GlassAudioPlayer = ({
               result="specular_saturated"
             />
             <feComponentTransfer in="specular_layer" result="specular_faded">
-              <feFuncA type="linear" slope="0.46" />
+              <feFuncA type="linear" slope="0.7" />
             </feComponentTransfer>
             <feBlend
               in="specular_saturated"
@@ -245,6 +246,7 @@ export const GlassAudioPlayer = ({
             />
             <feBlend in="specular_faded" in2="withSaturation" mode="normal" />
           </filter>
+          
         </defs>
       </svg>
 
