@@ -168,7 +168,7 @@ export default function Home() {
             </h1>
 
             <div className="hidden sm:block text-center color text-gray-400 italic opacity-50">
-              v3
+              v4
             </div>
           </div>
 
