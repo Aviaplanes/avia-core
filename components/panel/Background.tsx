@@ -6,13 +6,15 @@ import GlassVolumeSlider from "./GlassVolumeSlider";
 import { PlayIcon, PauseIcon, PreviousIcon, NextIcon } from "./icons";
 
 const videoList = [
-  "/videos/Jordan Barrett DANCE - SMOKE IT OFF - SLOWED.mp4",
-  "/videos/rjaviy.mp4",
   "/videos/eraserhead.mp4",
   "/videos/urban.mp4",
-  "/videos/pip.mp4",
   "/videos/IVOXYGEN - the girl next door.webm",
   "/videos/lauren.mp4",
+  "/videos/Comp 1_11.mp4",
+  "/videos/ggg.mp4",
+  "/videos/soundss.mp4",
+ 
+  "/videos/gat.mp4",
 ];
 
 function shuffleArray<T>(array: T[]): T[] {

@@ -11,6 +11,13 @@ import Marquee from "@/components/Marquee";
 
 const songs = [
   {
+    id: "0",
+    title: "гиблое эго",
+    artist: "VELIAL SQUAD",
+    src: "/music/гиблое эго.flac",
+    cover: "/music/images/гиблое эго.png",
+  },
+  {
     id: "1",
     title: "GRAVELAND (prod. shawtyglock x blayze)",
     artist: "VELIAL SQUAD",
@@ -148,25 +155,26 @@ export default function Home() {
               transition: "opacity 0.7s ease-out, transform 0.7s ease-out",
             }}
           >
+
             <h1
-              className="mt-[4%] text-4xl sm:text-5xl md:text-6xl lg:text-8xl font-bold whitespace-nowrap bg-clip-text text-transparent
+              className="mt-10 sm:mt-16 lg:mt-[2%] text-4xl sm:text-5xl md:text-6xl lg:text-8xl font-bold whitespace-nowrap bg-clip-text text-transparent
               bg-gradient-to-r from-[#fcfcfc] via-[#fafafa] to-[#181818] bg-[length:300%_auto] drop-shadow-[0_0_30px_rgba(229,229,229,0.6)]
-              animate-gradientFlow"
+              animate-gradientFlow pb-2"
               style={{
-                fontFamily: "system-ui",
+                fontFamily: 'ui-title-bold, sans-serif'
               }}
             >
               1000yearsofwrath
             </h1>
 
             <div className="hidden sm:block text-center color text-gray-400 italic opacity-50">
-              v2.2
+              v3
             </div>
           </div>
 
           <div
             ref={imageContainerRef}
-            className="w-[230px] h-[230px] sm:w-[280px] sm:h-[280px] md:w-[320px] md:h-[320px] lg:w-[380px] lg:h-[380px] mx-auto relative mb-8"
+            className="w-[160px] h-[160px] sm:w-[280px] sm:h-[280px] md:w-[320px] md:h-[320px] lg:w-[380px] lg:h-[380px] mx-auto relative mb-8"
             style={{
               borderRadius: "50%",
               overflow: "hidden",
@@ -223,12 +231,13 @@ export default function Home() {
 
           <h2
             ref={greetingRef}
-            className="text-base sm:text-lg md:text-xl text-center mt-6 sm:mt-8 md:mt-10 mb-4 font-bold text-black/90 dark:text-white/90 leading-relaxed text-shadow-xs text-shadow-white/30 dark:text-shadow-black/60 px-4 sm:px-6 md:px-8"
+            className="text-base sm:text-lg md:text-xl text-center mt-6 sm:mt-8 md:mt-10 mb-4 font-bold text-white/90 leading-relaxed text-shadow-xs text-shadow-black/60 px-4 sm:px-6 md:px-8"
             style={{
               opacity: isLoaded ? 1 : 0,
               transform: isLoaded ? "translateY(0)" : "translateY(20px)",
               transition: "opacity 0.7s ease-out, transform 0.7s ease-out",
               transitionDelay: "0.4s",
+              fontFamily: 'ui-regular, sans-serif' 
             }}
           >
             Привет, я Авиа. Занимаюсь разработкой сайтов, софтов, low-level
@@ -268,29 +277,35 @@ export default function Home() {
           </div>
 
           {/* Marquee компонент */}
-          <Marquee
-            text="— powered by av\aplanes     "
-            speed={500}
-            isLoaded={isLoaded}
-            className="w-3/4 mx-auto text-gray-500 font-system-ui mb-[3rem]"
-          />
+          <div style={{
+                fontFamily: 'ui-regular, sans-serif'
+              }}>
+            <Marquee
+
+              text="— powered by av\aplanes     "
+              speed={500}
+              isLoaded={isLoaded}
+              className="w-3/4 mx-auto text-gray-500 mb-[3rem]"
+              
+            />
+          </div>
         </div>
 
         <div
-  className="hidden md:block"
-  style={{
-    position: "fixed",
-    bottom: "7px",
-    left: "50%",
-    transform: "translateX(-50%)",
-    color: "white",
-    padding: "10px 20px",
-    borderRadius: "8px",
-    zIndex: 9999,
-  }}
->
-  <GlassAudioPlayer songs={songs} />
-</div>
+          className="hidden md:block"
+          style={{
+            position: "fixed",
+            bottom: "7px",
+            left: "50%",
+            transform: "translateX(-50%)",
+            color: "white",
+            padding: "10px 20px",
+            borderRadius: "8px",
+            zIndex: 9999,
+          }}
+        >
+          <GlassAudioPlayer songs={songs} />
+        </div>
       </div>
     </>
   );

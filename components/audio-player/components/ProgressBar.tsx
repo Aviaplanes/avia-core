@@ -43,13 +43,24 @@ export const ProgressBar = ({
           </div>
         )}
       </div>
+
       <div className="min-w-0 flex-1">
-        <div className="font-semibold text-[14px] text-black/90 dark:text-white/90 truncate [line-height:1.3] text-shadow-xs text-shadow-white/30 dark:text-shadow-black/60">
-          {song.title}
-        </div>
-        <div className="text-[11px] text-black/60 dark:text-white/60 truncate text-shadow-xs [line-height:1.3] text-shadow-white/30 dark:text-shadow-black/60">
+
+        <div style={{ 
+  fontFamily: 'ui-title-bold, sans-serif', 
+  fontWeight: 600, 
+  fontSize: '14px',
+  whiteSpace: 'nowrap',
+  overflow: 'hidden',
+  textOverflow: 'ellipsis'
+}}>
+  {song.title}
+</div>
+
+        <div style={{ fontFamily: 'ui-title-bold, sans-serif', fontSize: '11px' }}>
           {song.artist || "Неизвестный исполнитель"}
         </div>
+
         <div
           ref={progressRef}
           className="mt-1 h-[3px] w-full max-w-full bg-black/10 dark:bg-white/10 rounded cursor-pointer"
@@ -57,13 +68,15 @@ export const ProgressBar = ({
           onClick={onClick}
         >
           <div
-            className="h-full bg-black/40 dark:bg-white/40 rounded transition-all duration-100"
+            className="h-full bg-white/40 rounded transition-all duration-100"
             style={{
               width: `${((isDragging && dragTime !== null ? dragTime : currentTime) / duration) * 100}%`,
             }}
           />
         </div>
+
       </div>
+
     </div>
   );
 };

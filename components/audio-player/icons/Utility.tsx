@@ -1,11 +1,12 @@
 export const Utility = {
   MoreOptions: () => (
     <svg 
+
       stroke="currentColor" 
       fill="currentColor" 
       strokeWidth="0" 
       viewBox="0 0 512 512" 
-      className="opacity-80" 
+      className="opacity-80 text-white" 
       height="20" 
       width="20" 
       xmlns="http://www.w3.org/2000/svg"
@@ -22,7 +23,7 @@ export const Utility = {
       fill="currentColor" 
       strokeWidth="0" 
       viewBox="0 0 512 512" 
-      className="opacity-70" 
+      className="opacity-70 text-white" 
       height="18" 
       width="18" 
       xmlns="http://www.w3.org/2000/svg"

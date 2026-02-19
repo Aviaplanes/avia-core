@@ -6,6 +6,54 @@ import { ControlButtons } from "./components/ControlButtons";
 import { ProgressBar } from "./components/ProgressBar";
 import { Volume } from "./components/Volume";
 
+const FILTER_ID = "mixed-ui-player-filter";
+const DISPLACEMENT_MAP = "/images/displacement-map-yr2eh1.png";
+const SPECULAR_MAP = "/images/specular-map-yr2eh1.png";
+const PLAYER_W = 640;
+const PLAYER_H = 63;
+
+function useBackdropFilterWarmup(filterId: string, imageSrcs: string[]) {
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    const el = ref.current;
+    if (!el) return;
+
+    const preload = imageSrcs.map(
+      (src) =>
+        new Promise<void>((resolve) => {
+          const img = new Image();
+          img.onload = img.onerror = () => resolve();
+          img.src = src;
+        }),
+    );
+
+    Promise.all(preload).then(() => {
+      if (cancelled) return;
+
+      requestAnimationFrame(() => {
+        if (cancelled) return;
+        const filterUrl = `url("#${filterId}")`;
+        el.style.backdropFilter = filterUrl;
+        el.style.webkitBackdropFilter = filterUrl;
+        void el.offsetHeight;
+
+        requestAnimationFrame(() => {
+          if (cancelled) return;
+          el.style.transform = "translateZ(0)";
+          void el.offsetHeight;
+          el.style.transform = "";
+        });
+      });
+    });
+
+    return () => { cancelled = true; };
+  }, [filterId, imageSrcs]);
+
+  return ref;
+}
+
 export const GlassAudioPlayer = ({
   songs,
   initialSongIndex = 0,
@@ -26,7 +74,11 @@ export const GlassAudioPlayer = ({
   const MIN_VOLUME = 0.4;
   const currentSong = songs[currentSongIndex];
 
-  // === Управление треками ===
+  const backdropRef = useBackdropFilterWarmup(
+    FILTER_ID,
+    [DISPLACEMENT_MAP, SPECULAR_MAP],
+  );
+
   const handleNext = useCallback(() => {
     setCurrentSongIndex((prev) => (prev < songs.length - 1 ? prev + 1 : 0));
   }, [songs.length]);
@@ -45,32 +97,20 @@ export const GlassAudioPlayer = ({
   const togglePlayPause = () => {
     const audio = audioRef.current;
     if (!audio) return;
-    if (isPlaying) {
-      audio.pause();
-    } else {
-      audio.play().catch((e) => console.error("Play failed:", e));
-    }
+    if (isPlaying) audio.pause();
+    else audio.play().catch((e) => console.error("Play failed:", e));
     setIsPlaying(!isPlaying);
   };
 
-  const toggleRepeat = () => {
-    setIsRepeat(!isRepeat);
-  };
+  const toggleRepeat = () => setIsRepeat(!isRepeat);
 
-  // === Обновление времени и длительности ===
   useEffect(() => {
     const audio = audioRef.current;
     if (!audio) return;
 
-    const handleLoadedMetadata = () => {
-      setDuration(audio.duration || 0);
-    };
-
-    const handleTimeUpdate = () => {
-      if (!isDragging) setCurrentTime(audio.currentTime);
-    };
-
-    const handleEnded = () => {
+    const onMeta = () => setDuration(audio.duration || 0);
+    const onTime = () => { if (!isDragging) setCurrentTime(audio.currentTime); };
+    const onEnd = () => {
       if (isRepeat) {
         audio.currentTime = 0;
         audio.play().catch((e) => console.error("Play failed:", e));
@@ -79,18 +119,16 @@ export const GlassAudioPlayer = ({
       }
     };
 
-    audio.addEventListener("loadedmetadata", handleLoadedMetadata);
-    audio.addEventListener("timeupdate", handleTimeUpdate);
-    audio.addEventListener("ended", handleEnded);
-
+    audio.addEventListener("loadedmetadata", onMeta);
+    audio.addEventListener("timeupdate", onTime);
+    audio.addEventListener("ended", onEnd);
     return () => {
-      audio.removeEventListener("loadedmetadata", handleLoadedMetadata);
-      audio.removeEventListener("timeupdate", handleTimeUpdate);
-      audio.removeEventListener("ended", handleEnded);
+      audio.removeEventListener("loadedmetadata", onMeta);
+      audio.removeEventListener("timeupdate", onTime);
+      audio.removeEventListener("ended", onEnd);
     };
   }, [handleNext, isDragging, isRepeat]);
 
-  // === Переключение трека ===
   useEffect(() => {
     const audio = audioRef.current;
     if (!audio) return;
@@ -98,44 +136,29 @@ export const GlassAudioPlayer = ({
     audio.src = currentSong.src;
     setCurrentTime(0);
 
-    const handleLoad = () => {
+    const onLoad = () => {
       setDuration(audio.duration || 0);
-      if (isPlaying) {
-        audio.play().catch((e) => console.error("Play failed:", e));
-      }
+      if (isPlaying) audio.play().catch((e) => console.error("Play failed:", e));
     };
-
-    audio.addEventListener("loadedmetadata", handleLoad);
-
-    return () => {
-      audio.removeEventListener("loadedmetadata", handleLoad);
-    };
+    audio.addEventListener("loadedmetadata", onLoad);
+    return () => audio.removeEventListener("loadedmetadata", onLoad);
   }, [currentSong, isPlaying]);
 
-  // === Управление громкостью ===
   useEffect(() => {
     const audio = audioRef.current;
-    if (!audio) return;
-    audio.volume = isMuted ? 0 : volume;
+    if (audio) audio.volume = isMuted ? 0 : volume;
   }, [volume, isMuted]);
 
-  // === Прогресс-бар: drag & click ===
   const handleMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
     setIsDragging(true);
     handleMouseMove(e);
   };
 
-  const handleMouseMove = (
-    e: React.MouseEvent<HTMLDivElement> | MouseEvent,
-  ) => {
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement> | MouseEvent) => {
     if (!isDragging) return;
-    const progressContainer = progressRef.current;
-    if (!progressContainer) return;
-
-    const rect = progressContainer.getBoundingClientRect();
-    let newTime = ((e.clientX - rect.left) / rect.width) * duration;
-    newTime = Math.max(0, Math.min(duration, newTime));
-    setDragTime(newTime);
+    const rect = progressRef.current?.getBoundingClientRect();
+    if (!rect) return;
+    setDragTime(Math.max(0, Math.min(duration, ((e.clientX - rect.left) / rect.width) * duration)));
   };
 
   const handleMouseUp = () => {
@@ -149,15 +172,12 @@ export const GlassAudioPlayer = ({
   };
 
   const handleClickProgress = (e: React.MouseEvent<HTMLDivElement>) => {
-    const progressContainer = progressRef.current;
+    const rect = progressRef.current?.getBoundingClientRect();
     const audio = audioRef.current;
-    if (!progressContainer || !audio) return;
-
-    const rect = progressContainer.getBoundingClientRect();
-    let newTime = ((e.clientX - rect.left) / rect.width) * duration;
-    newTime = Math.max(0, Math.min(duration, newTime));
-    audio.currentTime = newTime;
-    setCurrentTime(newTime);
+    if (!rect || !audio) return;
+    const t = Math.max(0, Math.min(duration, ((e.clientX - rect.left) / rect.width) * duration));
+    audio.currentTime = t;
+    setCurrentTime(t);
   };
 
   useEffect(() => {
@@ -169,11 +189,7 @@ export const GlassAudioPlayer = ({
     };
   }, [isDragging, dragTime, duration]);
 
-  // === Громкость ===
   const toggleMute = () => {
-    const audio = audioRef.current;
-    if (!audio) return;
-
     if (isMuted || volume === 0) {
       setIsMuted(false);
       setVolume(prevVolume > 0 ? prevVolume : MIN_VOLUME);
@@ -187,105 +203,83 @@ export const GlassAudioPlayer = ({
   return (
     <div
       className="pointer-events-none absolute left-1/2 bottom-6 -translate-x-1/2 z-10"
-      style={{ width: "640px", height: "63px" }}
+      style={{ width: `${PLAYER_W}px`, height: `${PLAYER_H}px` }}
     >
-      {/* SVG фильтры */}
-      <svg colorInterpolationFilters="sRGB" style={{ display: "none" }}>
+      {/* SVG: не display:none, а нулевые размеры — чтобы браузер грузил feImage */}
+      <svg
+        aria-hidden="true"
+        focusable="false"
+        colorInterpolationFilters="sRGB"
+        className="absolute overflow-hidden pointer-events-none"
+        style={{ width: 0, height: 0 }}
+      >
         <defs>
-          <filter id="mixed-ui-player-filter">
-            <feGaussianBlur
-              in="SourceGraphic"
-              stdDeviation="0.9"
-              result="blurred_source"
-            />
+          {/* filterUnits и primitiveUnits НЕ заданы — используются дефолты:
+              filterUnits="objectBoundingBox" (даёт 10% margin — нет обрезки)
+              primitiveUnits="userSpaceOnUse" (пиксельные координаты в feImage) */}
+          <filter id={FILTER_ID}>
+            <feGaussianBlur in="SourceGraphic" stdDeviation="3" result="blurred_source" />
             <feImage
-              href="/images/displacement-map-yr2eh1.png"
-              x="0"
-              y="0"
-              width="640"
-              height="63"
+              href={DISPLACEMENT_MAP}
+              preserveAspectRatio="none"
+              x="0" y="0" width={PLAYER_W} height={PLAYER_H}
               result="displacement_map"
             />
             <feDisplacementMap
-              in="blurred_source"
-              in2="displacement_map"
-              scale="100.65216865752852"
-              xChannelSelector="R"
-              yChannelSelector="G"
+              in="blurred_source" in2="displacement_map"
+              scale="210" xChannelSelector="R" yChannelSelector="G"
               result="displaced"
             />
-            <feColorMatrix
-              in="displaced"
-              type="saturate"
-              result="displaced_saturated"
-              values="3"
-            />
+            <feColorMatrix in="displaced" type="saturate" values="9" result="displaced_saturated" />
             <feImage
-              href="/images/specular-map-yr2eh1.png"
-              x="0"
-              y="0"
-              width="640"
-              height="63"
+              href={SPECULAR_MAP}
+              preserveAspectRatio="none"
+              x="0" y="0" width={PLAYER_W} height={PLAYER_H}
               result="specular_layer"
             />
             <feComposite
-              in="displaced_saturated"
-              in2="specular_layer"
-              operator="in"
-              result="specular_saturated"
+              in="displaced_saturated" in2="specular_layer"
+              operator="in" result="specular_saturated"
             />
             <feComponentTransfer in="specular_layer" result="specular_faded">
-              <feFuncA type="linear" slope="0.46" />
+              <feFuncA type="linear" slope="0.7" />
             </feComponentTransfer>
-            <feBlend
-              in="specular_saturated"
-              in2="displaced"
-              mode="normal"
-              result="withSaturation"
-            />
+            <feBlend in="specular_saturated" in2="displaced" mode="normal" result="withSaturation" />
             <feBlend in="specular_faded" in2="withSaturation" mode="normal" />
           </filter>
         </defs>
       </svg>
 
-      {/* Основной контейнер с эффектом стекла */}
+      {/* Backdrop: начинает с blur(20px), хук переключит на SVG-фильтр */}
       <div
+        ref={backdropRef}
         className="absolute inset-0 bg-[var(--glass-rgb)]/[var(--glass-bg-alpha)]"
         style={{
           borderRadius: "34px",
-          backdropFilter: 'url("#mixed-ui-player-filter")',
+          backdropFilter: "blur(20px)",
+          WebkitBackdropFilter: "blur(20px)",
+          willChange: "backdrop-filter",
         }}
       />
 
-      {/* Контейнер с элементами управления */}
       <div
         className="pointer-events-auto absolute inset-0 flex items-center gap-4 px-6"
         style={{ borderRadius: "34px" }}
       >
         <ControlButtons
-          isPlaying={isPlaying}
-          isRepeat={isRepeat}
-          onPlayPause={togglePlayPause}
-          onPrev={handlePrev}
-          onNext={handleNext}
-          onRepeat={toggleRepeat}
+          isPlaying={isPlaying} isRepeat={isRepeat}
+          onPlayPause={togglePlayPause} onPrev={handlePrev}
+          onNext={handleNext} onRepeat={toggleRepeat}
         />
-
         <ProgressBar
-          song={currentSong}
-          progressRef={progressRef}
-          currentTime={currentTime}
-          duration={duration}
-          dragTime={dragTime}
-          isDragging={isDragging}
-          onMouseDown={handleMouseDown}
-          onClick={handleClickProgress}
+          song={currentSong} progressRef={progressRef}
+          currentTime={currentTime} duration={duration}
+          dragTime={dragTime} isDragging={isDragging}
+          onMouseDown={handleMouseDown} onClick={handleClickProgress}
         />
-
         <Volume isMuted={isMuted} volume={volume} onToggleMute={toggleMute} />
       </div>
 
-      {/* Скрытый audio элемент */}
       <audio ref={audioRef} preload="metadata" />
     </div>
   );

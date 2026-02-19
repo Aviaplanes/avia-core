@@ -39,7 +39,7 @@ export const Volume = ({ isMuted, volume }: VolumeProps) => {
       height="18" 
       width="18" 
       xmlns="http://www.w3.org/2000/svg"
-      className="opacity-70"
+      className="opacity-70 text-white"
     >
       {getVolumeIcon()}
     </svg>

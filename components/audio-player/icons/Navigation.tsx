@@ -3,6 +3,7 @@
 export const Navigation = {
   Previous: () => (
     <svg
+      className="text-white"
       stroke="currentColor"
       fill="currentColor"
       strokeWidth="0"
@@ -17,6 +18,7 @@ export const Navigation = {
 
   Next: () => (
     <svg
+      className="text-white"
       stroke="currentColor"
       fill="currentColor"
       strokeWidth="0"
