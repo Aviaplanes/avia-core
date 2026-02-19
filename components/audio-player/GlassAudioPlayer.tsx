@@ -214,21 +214,11 @@ export const GlassAudioPlayer = ({
         style={{ width: 0, height: 0 }}
       >
         <defs>
-<<<<<<< HEAD
           {/* filterUnits и primitiveUnits НЕ заданы — используются дефолты:
               filterUnits="objectBoundingBox" (даёт 10% margin — нет обрезки)
               primitiveUnits="userSpaceOnUse" (пиксельные координаты в feImage) */}
           <filter id={FILTER_ID}>
             <feGaussianBlur in="SourceGraphic" stdDeviation="3" result="blurred_source" />
-=======
-          
-          <filter id="mixed-ui-player-filter">
-            <feGaussianBlur
-              in="SourceGraphic"
-              stdDeviation="1.5"
-              result="blurred_source"
-            />
->>>>>>> 49fcf8c0ef2f68664548bb28d73ffe64db890495
             <feImage
               href={DISPLACEMENT_MAP}
               preserveAspectRatio="none"
@@ -236,27 +226,11 @@ export const GlassAudioPlayer = ({
               result="displacement_map"
             />
             <feDisplacementMap
-<<<<<<< HEAD
               in="blurred_source" in2="displacement_map"
               scale="210" xChannelSelector="R" yChannelSelector="G"
               result="displaced"
             />
             <feColorMatrix in="displaced" type="saturate" values="9" result="displaced_saturated" />
-=======
-              in="blurred_source"
-              in2="displacement_map"
-              scale="120"
-              xChannelSelector="R"
-              yChannelSelector="G"
-              result="displaced"
-            />
-            <feColorMatrix
-              in="displaced"
-              type="saturate"
-              result="displaced_saturated"
-              values="9"
-            />
->>>>>>> 49fcf8c0ef2f68664548bb28d73ffe64db890495
             <feImage
               href={SPECULAR_MAP}
               preserveAspectRatio="none"
@@ -273,7 +247,6 @@ export const GlassAudioPlayer = ({
             <feBlend in="specular_saturated" in2="displaced" mode="normal" result="withSaturation" />
             <feBlend in="specular_faded" in2="withSaturation" mode="normal" />
           </filter>
-          
         </defs>
       </svg>
 
