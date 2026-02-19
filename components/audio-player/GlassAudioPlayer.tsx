@@ -36,7 +36,7 @@ function useBackdropFilterWarmup(filterId: string, imageSrcs: string[]) {
         if (cancelled) return;
         const filterUrl = `url("#${filterId}")`;
         el.style.backdropFilter = filterUrl;
-        el.style.webkitBackdropFilter = filterUrl;
+        (el.style as any).webkitBackdropFilter = filterUrl;
         void el.offsetHeight;
 
         requestAnimationFrame(() => {
