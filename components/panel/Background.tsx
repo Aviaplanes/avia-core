@@ -95,7 +95,7 @@ const BackgroundVideo = () => {
   const nextVideo = () =>
     setCurrentIndex((prev) => (prev + 1) % shuffledVideos.length);
 
-  if (shuffledVideos.length === 0) return null;
+
 
   return (
     <div>
