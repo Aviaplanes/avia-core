@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { headers } from "next/headers";
 
 import Background from "@/components/panel/Background";
 import Image from "next/image";
@@ -68,7 +69,17 @@ const songs = [
   },
 ];
 
+function isMobileDevice(userAgent: string): boolean {
+  return /android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/i.test(
+    userAgent.toLowerCase()
+  );
+}
+
 export default function Home() {
+  const headersList = await headers();
+  const userAgent = headersList.get("user-agent") || "";
+  const initialIsMobile = isMobileDevice(userAgent);
+
   useLenis();
 
   const parallaxRef = useRef<HTMLDivElement>(null);
@@ -122,7 +133,7 @@ export default function Home() {
 
   return (
     <>
-      <Background />
+      <Background initialIsMobile={initialIsMobile}/>
       <div
         style={{
           position: "fixed",
@@ -167,9 +178,7 @@ export default function Home() {
               1000yearsofwrath
             </h1>
 
-            <div className="hidden sm:block text-center color text-gray-400 italic opacity-50">
-              v4
-            </div>
+           
           </div>
 
           <div
