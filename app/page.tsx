@@ -75,7 +75,7 @@ function isMobileDevice(userAgent: string): boolean {
   );
 }
 
-export default function Home() {
+export default async function Home() {
   const headersList = await headers();
   const userAgent = headersList.get("user-agent") || "";
   const initialIsMobile = isMobileDevice(userAgent);
