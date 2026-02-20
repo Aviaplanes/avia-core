@@ -70,8 +70,7 @@ const BackgroundVideo = () => {
     if (currentIndex + 1 < shuffledVideos.length) {
       setCurrentIndex(currentIndex + 1);
     } else {
-      const newShuffled = shuffleArray(videoList);
-      setShuffledVideos(newShuffled);
+      setShuffledVideos(shuffleArrayKeepFirst(videoList));
       setCurrentIndex(0);
     }
   };
