@@ -17,18 +17,19 @@ const videoList = [
   "/videos/gat.mp4",
 ];
 
-function shuffleArray<T>(array: T[]): T[] {
-  const arr = [...array];
-  for (let i = arr.length - 1; i > 0; i--) {
+function shuffleArrayKeepFirst<T>(array: T[]): T[] {
+  if (array.length <= 1) return array;
+  const [first, ...rest] = [...array];
+  for (let i = rest.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
-    [arr[i], arr[j]] = [arr[j], arr[i]];
+    [rest[i], rest[j]] = [rest[j], rest[i]];
   }
-  return arr;
+  return [first, ...rest];
 }
 
 const BackgroundVideo = () => {
   const videoRef = useRef<HTMLVideoElement>(null);
-  const [shuffledVideos, setShuffledVideos] = useState<string[]>([]);
+  const [shuffledVideos, setShuffledVideos] = useState<string[]>(videoList);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isMuted, setIsMuted] = useState(true);
   const [volume, setVolume] = useState(0.2);
@@ -45,9 +46,7 @@ const BackgroundVideo = () => {
   }, []);
 
   useEffect(() => {
-    const shuffled = shuffleArray(videoList);
-    setShuffledVideos(shuffled);
-    setCurrentIndex(0);
+    setShuffledVideos(shuffleArrayKeepFirst(videoList));
   }, []);
 
   useEffect(() => {
@@ -64,15 +63,7 @@ const BackgroundVideo = () => {
   }, [currentIndex, isMuted, volume, isPaused]);
 
   const togglePause = () => {
-    if (videoRef.current) {
-      if (videoRef.current.paused) {
-        videoRef.current.play();
-        setIsPaused(false);
-      } else {
-        videoRef.current.pause();
-        setIsPaused(true);
-      }
-    }
+    setIsPaused((prev) => !prev);
   };
 
   const handleVideoEnd = () => {
