@@ -94,7 +94,16 @@ const BackgroundVideo = () => {
   const nextVideo = () =>
     setCurrentIndex((prev) => (prev + 1) % shuffledVideos.length);
 
-
+    const handleVolumeChange = (newVolume: number) => {
+    setVolume(newVolume);
+    
+    if (isMuted && newVolume > 0) {
+      setIsMuted(false);
+    }
+    else if (!isMuted && newVolume === 0) {
+      setIsMuted(true);
+    }
+  };
 
   return (
     <div>
@@ -133,7 +142,7 @@ const BackgroundVideo = () => {
           <div className="controls-row btn-0">
             <GlassVolumeSlider
               volume={volume}
-              onVolumeChange={setVolume}
+              onVolumeChange={handleVolumeChange}
               isMuted={isMuted}
               onToggleMute={toggleMute}
               hovered={hovered}
