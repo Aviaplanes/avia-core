@@ -266,7 +266,7 @@ export default function Home() {
                   alt: "GitHub",
                 },
                 {
-                  href: "https://t.me/fink1337",
+                  href: "https://t.me/nonlu",
                   src: "/logo/Telegram.png",
                   alt: "Telegram",
                 },
