@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "av\\aplanes",
-  description: "123",
+  description: "digital identity",
 };
 
 export default function RootLayout({
