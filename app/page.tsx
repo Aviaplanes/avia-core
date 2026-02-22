@@ -1,8 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-
-
+import GlassButton from '@/components/GlassButton/GlassButton';
 import Background from "@/components/panel/Background";
 import Image from "next/image";
 import useLenis from "@/hooks/useLenis";
@@ -241,8 +240,7 @@ export default function Home() {
               fontFamily: 'ui-regular, sans-serif' 
             }}
           >
-            Привет, я Авиа. Занимаюсь разработкой сайтов, софтов, low-level
-            софта, блокчейн технологий, ds/tg ботов и просто web3 enjoyer.
+            Avia here. I build low-level software, blockchain infrastructure, and automation bots (DS/TG). Niche market player & Web3 enjoyer.
           </h2>
 
           <div
@@ -307,6 +305,9 @@ export default function Home() {
         >
           <GlassAudioPlayer songs={songs} />
         </div>
+
+      
+
       </div>
     </>
   );
