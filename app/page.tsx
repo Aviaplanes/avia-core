@@ -266,9 +266,9 @@ export default function Home() {
                   alt: "GitHub",
                 },
                 {
-                  href: "https://twitter.com/1000letgneva",
-                  src: "/logo/X.png",
-                  alt: "Twitter",
+                  href: "https://t.me/fink1337",
+                  src: "/logo/Telegram.png",
+                  alt: "Telegram",
                 },
               ]}
               className="mb-8 sm:mb-12 mt-[-10px]"
