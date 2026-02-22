@@ -130,7 +130,7 @@ const BackgroundVideo = () => {
       <div
         style={{
           position: "fixed",
-          top: "20px",
+          top: "0px",
           right: "20px",
           display: "flex",
           alignItems: "center",

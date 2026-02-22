@@ -1,0 +1,142 @@
+/* src/components/GlassButton/GlassButton.module.css */
+
+.submitBtn {
+    --text-color: rgba(255, 255, 255, 0.9);
+    --text-other-color: rgba(255, 255, 255, 0.7);
+    --text-desc: rgb(114, 114, 114);
+    --border: rgb(255, 255, 255, 0.06);
+    --text-desc-on: rgb(185, 185, 185, 0.9);
+
+    text-decoration: none;
+    box-sizing: border-box;
+    list-style: none;
+    scroll-behavior: smooth;
+    font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
+    position: relative;
+    border-radius: 30px;
+    border: none;
+    margin: 15px 0;
+    width: 100%;
+    padding: 16px;
+    display: flex; /* Чтобы текст/иконка всегда были по центру */
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-size: 18px;
+    background: rgba(48, 48, 48, 0.141);
+    color: var(--text-color);
+    font-weight: 400;
+    
+    animation-delay: 0.6s;
+    isolation: isolate;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px); /* Для сафари */
+
+    /* Плавный возврат (когда отпускаешь кнопку) */
+  
+    transform: scale(1.02) translateZ(0);
+    will-change: transform;
+    transition: all 0.3s cubic-bezier(0.45, 1.45, 0.49, 1.15);
+    
+}
+
+/* Верхний блик */
+.submitBtn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    
+    background-image: radial-gradient(
+        ellipse 100% 100% at 50% 0%, 
+        rgba(255, 255, 255, 0.8) 0%,  
+        rgba(255, 255, 255, 0.1) 60%, 
+        transparent 100%              
+    );
+    background-size: 120% 100%;
+    background-position: center top;
+    background-repeat: no-repeat;
+    
+    -webkit-mask:
+        linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+    z-index: 1;
+    
+    transition: background-size 0.44s ease, opacity 0.44s ease;
+}
+
+/* Нижний блик */
+.submitBtn::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    
+    background-image: radial-gradient(
+        ellipse 100% 100% at 50% 100%, 
+        rgba(255, 255, 255, 0.05) 0%,  
+        rgba(255, 255, 255, 0.1) 60%,
+        transparent 100%
+    );
+    background-size: 100% 100%;
+    
+    -webkit-mask:
+        linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+    z-index: 1;
+    
+    transition: background-size 0.38s ease, opacity 0.38s ease;
+}
+
+/* ========================================= */
+/* ЭФФЕКТЫ ПРИ НАВЕДЕНИИ                     */
+/* ========================================= */
+
+.submitBtn:hover {
+    transform: scale(1.06); 
+    background: rgba(100, 100, 100, 0.17);
+}
+
+.submitBtn:hover::before {
+    background-size: 300% 200%; 
+    opacity: 0.9; 
+}
+
+/* ========================================= */
+/* ЭФФЕКТЫ ПРИ НАЖАТИИ (УПРАВЛЯЕТСЯ REACT)   */
+/* ========================================= */
+
+.pressed {
+    transform: scale(0.95) !important;
+    background: rgba(82, 82, 82, 0.25) !important;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1) !important;
+    
+    /* Моментальное вдавливание (100мс) без S-образной задержки в начале */
+    transition: all 0.1s cubic-bezier(0.32, 0.72, 0, 1) !important; 
+}
+
+.pressed::before,
+.pressed::after {
+    opacity: 1 !important;
+    transition: opacity 0.1s cubic-bezier(0.32, 0.72, 0, 1) !important;
+}
+
+
+.submitBtn:not(:disabled):hover {
+    /* Добавили !important, чтобы ни один глобальный стиль не смог это перебить */
+    transform: scale(1.06) translateZ(0) !important; 
+    background: rgba(100, 100, 100, 0.17) !important;
+}
+
+.submitBtn:not(:disabled):hover::before {
+    background-size: 300% 200% !important; 
+    opacity: 0.9 !important; 
+}
