@@ -1,4 +1,4 @@
-<h1 align="center">🪩 0xAvia Digital Identity (avia-core)</h1>
+<h1 align="center">🪩 0xAvia Digital Identity</h1>
 
 <p align="center">
   <b>Source code for my personal landing page</b>
