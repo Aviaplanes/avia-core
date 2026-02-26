@@ -11,6 +11,16 @@ interface Props {
   children?: React.ReactNode;
 }
 
+// Перемешивание массива (Fisher-Yates shuffle)
+const shuffle = <T,>(array: T[]): T[] => {
+  const arr = [...array];
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+};
+
 export const Background = ({ 
   folder = '/footage', 
   overlay = 0.4,
@@ -25,6 +35,7 @@ export const Background = ({
   const [isMuted, setIsMuted] = useState(true);
   const videoRef = useRef<HTMLVideoElement>(null);
   const isPlayingRef = useRef(isPlaying);
+  const isFirstLoad = useRef(true);
 
   useEffect(() => {
     isPlayingRef.current = isPlaying;
@@ -41,24 +52,39 @@ export const Background = ({
     if (!isDesktop) return;
     fetch(`/api/videos?folder=${folder}`)
       .then(res => res.json())
-      .then(data => setVideos(data.videos));
+      .then(data => {
+        // Перемешиваем при загрузке
+        setVideos(shuffle(data.videos));
+      });
   }, [folder, isDesktop]);
 
   useEffect(() => {
     if (!videoRef.current || !videos.length) return;
 
-    videoRef.current.src = videos[current];
-    videoRef.current.load();
+    const video = videoRef.current;
+    video.src = videos[current];
+    
+    if (isFirstLoad.current) {
+      video.muted = true;
+      isFirstLoad.current = false;
+    }
+
+    video.load();
 
     if (isPlayingRef.current) {
-      videoRef.current.play().catch(() => {});
+      video.play().catch(() => {
+        video.muted = true;
+        setIsMuted(true);
+        video.play().catch(() => {});
+      });
     }
   }, [current, videos]);
 
   useEffect(() => {
     if (!videoRef.current) return;
     videoRef.current.volume = volume;
-  }, [volume]);
+    videoRef.current.muted = isMuted;
+  }, [volume, isMuted]);
 
   const next = useCallback(
     () => setCurrent(prev => (prev + 1) % videos.length), 
@@ -70,7 +96,6 @@ export const Background = ({
     [videos.length]
   );
 
-  // Синхронизация с реальным состоянием видео
   const handlePlay = useCallback(() => {
     setIsPlaying(true);
   }, []);
@@ -79,7 +104,6 @@ export const Background = ({
     setIsPlaying(false);
   }, []);
 
-  // Toggle теперь смотрит на реальное состояние видео
   const toggle = useCallback(() => {
     if (!videoRef.current) return;
     
@@ -88,7 +112,6 @@ export const Background = ({
     } else {
       videoRef.current.pause();
     }
-    // Стейт обновится через onPlay/onPause
   }, []);
 
   const handleVolumeChange = useCallback((v: number) => {
@@ -98,8 +121,11 @@ export const Background = ({
   }, [isMuted]);
 
   const toggleMute = useCallback(() => {
-    setIsMuted(prev => !prev);
-  }, []);
+    if (!videoRef.current) return;
+    const newMuted = !isMuted;
+    videoRef.current.muted = newMuted;
+    setIsMuted(newMuted);
+  }, [isMuted]);
 
   if (!isDesktop || !videos.length) return <>{children}</>;
 
@@ -116,6 +142,7 @@ export const Background = ({
     >
       <video
         ref={videoRef}
+        autoPlay
         muted
         playsInline
         onEnded={next}
