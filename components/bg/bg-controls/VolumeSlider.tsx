@@ -20,7 +20,11 @@ const glassStyle = `
   shadow-lg
 `;
 
-const springTransition = { type: "spring", stiffness: 400, damping: 17 };
+const springTransition = { 
+  type: "spring", 
+  stiffness: 400, 
+  damping: 17 
+} as const;
 
 export default function VolumeSlider() {
   const controls = useControls();
