@@ -1,15 +1,39 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import GlassButton from '@/components/GlassButton/GlassButton';
-import Background from "@/components/panel/Background";
+
+import { BGControls } from "@/components/bg/bg-controls/Main";
+import { Background } from '@/components/bg/background';
 import Image from "next/image";
 import useLenis from "@/hooks/useLenis";
 import Socials from "@/components/Socials";
 import GlassAudioPlayer from "@/components/audio-player/GlassAudioPlayer";
 import Marquee from "@/components/Marquee";
 
+
 const songs = [
+  {
+    id: "8",
+    title: "Skit",
+    artist: "JEEMBO",
+    src: "/music/Skit - JEEMBO.flac",
+    cover: "/music/images/jeembo.jpg",
+  },
+  {
+    id: "10",
+    title: "Go Hella",
+    artist: "JEEMBO",
+    src: "/music/Go Hella - JEEMBO.flac",
+    cover: "/music/images/jeembo.jpg",
+  },
+  {   
+    id: "9",
+    title: "Obsidian Bones",
+    artist: "JEEMBO",
+    src: "/music/Obsidian Bones - JEEMBO.flac",
+    cover: "/music/images/jeembo.jpg",
+  },
+  
   {
     id: "0",
     title: "гиблое эго",
@@ -124,20 +148,23 @@ export default function Home() {
 
   return (
     <>
-      <Background />
-      <div
-        style={{
-          position: "fixed",
-          top: 0,
-          left: 0,
-          width: "100vw",
-          height: "100vh",
-          background: "rgba(0, 0, 0, 0)",
-          zIndex: -100,
-          pointerEvents: "none",
-        }}
-      />
 
+      <Background folder="/footage" overlay={0.2}>
+        <BGControls />
+          <div
+            style={{
+              position: "fixed",
+              top: 0,
+              left: 0,
+              width: "100vw",
+              height: "100vh",
+              background: "rgba(0, 0, 0, 0)",
+              zIndex: -100,
+              pointerEvents: "none",
+            }}
+          />
+      </Background>
+    
       <div className="relative">
         <div
           ref={parallaxRef}
@@ -168,7 +195,7 @@ export default function Home() {
             >
               1000yearsofwrath
             </h1>
-
+              
            
           </div>
 
@@ -242,6 +269,8 @@ export default function Home() {
           >
             Avia here. I build low-level software, blockchain infrastructure, and automation bots (DS/TG). Niche market player & Web3 enjoyer.
           </h2>
+
+            
 
           <div
             className="flex justify-center mb-8 sm:mb-10 mt-[2rem]"
