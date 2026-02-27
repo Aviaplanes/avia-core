@@ -1,13 +1,16 @@
 // components/ServiceWorkerProvider.tsx
-"use client";
+'use client';
 
-import { useServiceWorker } from "@/hooks/useServiceWorker";
+import { useEffect } from 'react';
 
-export function ServiceWorkerProvider({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  useServiceWorker();
+export function ServiceWorkerProvider({ children }: { children: React.ReactNode }) {
+  useEffect(() => {
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/sw.js')
+        .then((reg) => console.log('SW registered:', reg.scope))
+        .catch((err) => console.log('SW error:', err));
+    }
+  }, []);
+
   return <>{children}</>;
 }
