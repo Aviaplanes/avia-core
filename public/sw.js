@@ -1,5 +1,5 @@
 // public/sw.js
-const CACHE_NAME = 'video-cache-v1';
+const CACHE_NAME = 'media-cache-v2'; // ← обновил версию
 
 const VIDEO_URLS = [
   '/footage/Comp 1_11.mp4',
@@ -15,12 +15,40 @@ const VIDEO_URLS = [
   '/footage/urban.mp4',
 ];
 
-// Установка — кешируем все видео
+const MUSIC_URLS = [
+  '/music/Skit - JEEMBO.flac',
+  '/music/Go Hella - JEEMBO.flac',
+  '/music/Obsidian Bones - JEEMBO.flac',
+  '/music/гиблое эго.flac',
+  '/music/VELIAL SQUAD - GRAVELAND.flac',
+  '/music/VELIAL SQUAD - CREEPERS.mpeg',
+  '/music/IVOXYGEN - what else can you ask for.flac',
+  '/music/Imogen Heap - Headlock.flac',
+  '/music/VELIAL SQUAD - Вампирский щит.mp3',
+  '/music/Черная_Река_ft_Trantor_p_shawtyglock.mp3',
+  '/music/ATRA PLAGUE [p. shawtyglock x Yung Meep]   VELIAL SQUAD.mp3',
+];
+
+const COVER_URLS = [
+  '/music/images/jeembo.jpg',
+  '/music/images/гиблое эго.png',
+  '/music/images/VELIAL SQUAD - GRAVELAND.webp',
+  '/music/images/VELIAL SQUAD - CREEPERS.jpg',
+  '/music/images/IVOXYGEN - what else can you ask for.jpg',
+  '/music/images/Imogen Heap - Headlock.jpg',
+  '/music/images/vampire.jpg',
+  '/music/images/reka.png',
+  '/music/images/d3ff548ecce04776e30c95a93cc342a9.webp',
+];
+
+const ALL_MEDIA = [...VIDEO_URLS, ...MUSIC_URLS, ...COVER_URLS];
+
+// Установка — кешируем всё
 self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
-      console.log('Caching videos...');
-      return cache.addAll(VIDEO_URLS);
+      console.log('Caching media...');
+      return cache.addAll(ALL_MEDIA);
     })
   );
   self.skipWaiting();
@@ -42,8 +70,8 @@ self.addEventListener('activate', (event) => {
 self.addEventListener('fetch', (event) => {
   const url = new URL(event.request.url);
   
-  // Только для видео
-  if (url.pathname.startsWith('/footage/')) {
+  // Для видео и музыки
+  if (url.pathname.startsWith('/footage/') || url.pathname.startsWith('/music/')) {
     event.respondWith(
       caches.match(event.request).then((cached) => {
         if (cached) {
@@ -52,7 +80,6 @@ self.addEventListener('fetch', (event) => {
         }
         
         return fetch(event.request).then((response) => {
-          // Кешируем новое видео
           const clone = response.clone();
           caches.open(CACHE_NAME).then((cache) => {
             cache.put(event.request, clone);
