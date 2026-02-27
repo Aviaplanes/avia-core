@@ -1,3 +1,4 @@
+// src/components/bg/background.tsx
 'use client';
 
 import { useState, useEffect, useRef, useCallback } from 'react';
@@ -17,15 +18,12 @@ const VIDEO_LIST = [
   '/footage/urban.mp4',
 ];
 
-
 interface Props {
-  folder?: string;
   overlay?: number;
   minWidth?: number;
   children?: React.ReactNode;
 }
 
-// Перемешивание массива (Fisher-Yates shuffle)
 const shuffle = <T,>(array: T[]): T[] => {
   const arr = [...array];
   for (let i = arr.length - 1; i > 0; i--) {
@@ -36,7 +34,7 @@ const shuffle = <T,>(array: T[]): T[] => {
 };
 
 export const Background = ({ 
-  overlay = 0.4,
+  overlay = 0.25,
   minWidth = 768,
   children
 }: Props) => {
@@ -48,11 +46,15 @@ export const Background = ({
   const [isMuted, setIsMuted] = useState(true);
   const videoRef = useRef<HTMLVideoElement>(null);
   const isPlayingRef = useRef(isPlaying);
-  const isFirstLoad = useRef(true);
+  const isMutedRef = useRef(isMuted);
 
   useEffect(() => {
     isPlayingRef.current = isPlaying;
   }, [isPlaying]);
+
+  useEffect(() => {
+    isMutedRef.current = isMuted;
+  }, [isMuted]);
 
   useEffect(() => {
     const checkWidth = () => setIsDesktop(window.innerWidth >= minWidth);
@@ -71,19 +73,20 @@ export const Background = ({
 
     const video = videoRef.current;
     video.src = videos[current];
-    
-    if (isFirstLoad.current) {
-      video.muted = true;
-      isFirstLoad.current = false;
-    }
-
     video.load();
 
     if (isPlayingRef.current) {
+      // Сохраняем текущее состояние muted
+      const wasMuted = isMutedRef.current;
+      
       video.play().catch(() => {
-        video.muted = true;
-        setIsMuted(true);
-        video.play().catch(() => {});
+        // Если не получилось — мутим ТОЛЬКО для первого autoplay
+        // и только если раньше не было unmuted
+        if (wasMuted) {
+          video.muted = true;
+          video.play().catch(() => {});
+        }
+        // Если юзер уже включил звук — не мутим, просто не играем
       });
     }
   }, [current, videos]);
