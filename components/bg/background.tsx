@@ -1,8 +1,22 @@
-// src/components/bg/background.tsx
 'use client';
 
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { ControlsProvider } from './bg-controls/controls';
+
+const VIDEO_LIST = [
+  '/footage/Comp 1_11.mp4',
+  '/footage/eraserhead.mp4',
+  '/footage/gat.mp4',
+  '/footage/ggg.mp4',
+  '/footage/IVOXYGEN - the girl next door.webm',
+  '/footage/Jordan Barrett DANCE - SMOKE IT OFF - SLOWED.mp4',
+  '/footage/lauren.mp4',
+  '/footage/pip.mp4',
+  '/footage/rjaviy.mp4',
+  '/footage/soundss.mp4',
+  '/footage/urban.mp4',
+];
+
 
 interface Props {
   folder?: string;
@@ -22,7 +36,6 @@ const shuffle = <T,>(array: T[]): T[] => {
 };
 
 export const Background = ({ 
-  folder = '/footage', 
   overlay = 0.4,
   minWidth = 768,
   children
@@ -50,13 +63,8 @@ export const Background = ({
 
   useEffect(() => {
     if (!isDesktop) return;
-    fetch(`/api/videos?folder=${folder}`)
-      .then(res => res.json())
-      .then(data => {
-        // Перемешиваем при загрузке
-        setVideos(shuffle(data.videos));
-      });
-  }, [folder, isDesktop]);
+    setVideos(shuffle(VIDEO_LIST));
+  }, [isDesktop]);
 
   useEffect(() => {
     if (!videoRef.current || !videos.length) return;
