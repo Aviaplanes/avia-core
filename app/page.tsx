@@ -149,7 +149,7 @@ export default function Home() {
   return (
     <>
 
-      <Background folder="/footage" overlay={0.2}>
+      <Background overlay={0.5}>
         <BGControls />
           <div
             style={{
