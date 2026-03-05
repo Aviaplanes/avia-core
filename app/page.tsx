@@ -13,6 +13,13 @@ import Marquee from "@/components/Marquee";
 
 const songs = [
   {
+    id: "11",
+    title: "texas chain",
+    artist: "VELIAL SQUAD",
+    src: "/music/7 - texas chain.m4a",
+    cover: "/music/images/texas chain.png",
+  },
+  {
     id: "8",
     title: "Skit",
     artist: "JEEMBO",
