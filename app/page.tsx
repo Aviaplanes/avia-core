@@ -13,28 +13,28 @@ import Marquee from "@/components/Marquee";
 
 const songs = [
   {
-    id: "11",
+    id: "1",
     title: "texas chain",
     artist: "VELIAL SQUAD",
     src: "/music/7 - texas chain.m4a",
     cover: "/music/images/texas chain.png",
   },
   {
-    id: "8",
+    id: "2",
     title: "Skit",
     artist: "JEEMBO",
     src: "/music/Skit - JEEMBO.flac",
     cover: "/music/images/jeembo.jpg",
   },
   {
-    id: "10",
+    id: "3",
     title: "Go Hella",
     artist: "JEEMBO",
     src: "/music/Go Hella - JEEMBO.flac",
     cover: "/music/images/jeembo.jpg",
   },
   {   
-    id: "9",
+    id: "4",
     title: "Obsidian Bones",
     artist: "JEEMBO",
     src: "/music/Obsidian Bones - JEEMBO.flac",
@@ -42,61 +42,33 @@ const songs = [
   },
   
   {
-    id: "0",
+    id: "5",
     title: "гиблое эго",
     artist: "VELIAL SQUAD",
     src: "/music/гиблое эго.flac",
     cover: "/music/images/гиблое эго.png",
   },
   {
-    id: "1",
+    id: "6",
     title: "GRAVELAND (prod. shawtyglock x blayze)",
     artist: "VELIAL SQUAD",
     src: "/music/VELIAL SQUAD - GRAVELAND.flac",
     cover: "/music/images/VELIAL SQUAD - GRAVELAND.webp",
   },
   {
-    id: "2",
-    title: "Creepers",
-    artist: "VELIAL SQUAD",
-    src: "/music/VELIAL SQUAD - CREEPERS.mpeg",
-    cover: "/music/images/VELIAL SQUAD - CREEPERS.jpg",
-  },
-  {
-    id: "3",
+    id: "7",
     title: "what else can you ask for",
     artist: "IVOXYGEN",
     src: "/music/IVOXYGEN - what else can you ask for.flac",
     cover: "/music/images/IVOXYGEN - what else can you ask for.jpg",
   },
   {
-    id: "4",
+    id: "8",
     title: "Headlock",
     artist: "Imogen Heap",
     src: "/music/Imogen Heap - Headlock.flac",
     cover: "/music/images/Imogen Heap - Headlock.jpg",
-  },
-  {
-    id: "5",
-    title: "Вампирский щит",
-    artist: "VELIAL SQUAD",
-    src: "/music/VELIAL SQUAD - Вампирский щит.mp3",
-    cover: "/music/images/vampire.jpg",
-  },
-  {
-    id: "6",
-    title: "Черная река",
-    artist: "VELIAL SQUAD",
-    src: "/music/Черная_Река_ft_Trantor_p_shawtyglock.mp3",
-    cover: "/music/images/reka.png",
-  },
-  {
-    id: "7",
-    title: "ATRA PLAGUE",
-    artist: "VELIAL SQUAD",
-    src: "/music/ATRA PLAGUE [p. shawtyglock x Yung Meep]   VELIAL SQUAD.mp3",
-    cover: "/music/images/d3ff548ecce04776e30c95a93cc342a9.webp",
-  },
+  }
 ];
 
 
@@ -332,7 +304,7 @@ export default function Home() {
             position: "fixed",
             bottom: "7px",
             left: "50%",
-            transform: "translateX(-50%)",
+            transform: "translateX(-50%) scale(1.1)",
             color: "white",
             padding: "10px 20px",
             borderRadius: "8px",
