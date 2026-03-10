@@ -218,7 +218,7 @@ export const GlassAudioPlayer = ({
               filterUnits="objectBoundingBox" (даёт 10% margin — нет обрезки)
               primitiveUnits="userSpaceOnUse" (пиксельные координаты в feImage) */}
           <filter id={FILTER_ID}>
-            <feGaussianBlur in="SourceGraphic" stdDeviation="3" result="blurred_source" />
+            <feGaussianBlur in="SourceGraphic" stdDeviation="1" result="blurred_source" />
             <feImage
               href={DISPLACEMENT_MAP}
               preserveAspectRatio="none"
@@ -227,10 +227,10 @@ export const GlassAudioPlayer = ({
             />
             <feDisplacementMap
               in="blurred_source" in2="displacement_map"
-              scale="210" xChannelSelector="R" yChannelSelector="G"
+              scale="220" xChannelSelector="R" yChannelSelector="G"
               result="displaced"
             />
-            <feColorMatrix in="displaced" type="saturate" values="9" result="displaced_saturated" />
+            <feColorMatrix in="displaced" type="saturate" values="8.6" result="displaced_saturated" />
             <feImage
               href={SPECULAR_MAP}
               preserveAspectRatio="none"
@@ -242,7 +242,7 @@ export const GlassAudioPlayer = ({
               operator="in" result="specular_saturated"
             />
             <feComponentTransfer in="specular_layer" result="specular_faded">
-              <feFuncA type="linear" slope="0.7" />
+              <feFuncA type="linear" slope="0.3" />
             </feComponentTransfer>
             <feBlend in="specular_saturated" in2="displaced" mode="normal" result="withSaturation" />
             <feBlend in="specular_faded" in2="withSaturation" mode="normal" />
